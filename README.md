@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vercel Clone
 
-## Getting Started
+YouTube Video Link: https://youtu.be/0A_JpLYG7hM
 
-First, run the development server:
+Whiteboard Diagram: https://app.eraser.io/workspace/0f8XnDF61iGcatypPqIR?origin=share
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisite
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.JS: [Master NodeJS Playlist](https://youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo&si=5gaDmQ_mzuBHvAsg)
+- Redis: [Redis Crash Course](https://youtu.be/Vx2zPMPvmug?si=Z_XT6BMNgkgwnX49)
+- Learn Docker:
+  - Part 1: [Docker in One Shot - Part 1](https://youtu.be/31k6AtW-b3Y?si=FIPffAKieiBGgo5c)
+  - Part 2: [Docker in One Shot - Part 2](https://youtu.be/xPT8mXa-sJg?si=-6z_HkJZXsvrvSpO)
+- Docker with AWS ECS and ECR: [Real World Docker Deployments with AWS](https://youtu.be/AiiFbsAlLaI?si=dKrFZFr7fLBXKSab)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Setup Guide
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This Project contains following services and folders:
 
-## Learn More
+- `api-server`: HTTP API Server for REST API's
+- `build-server`: Docker Image code which clones, builds and pushes the build to S3
+- `s3-reverse-proxy`: Reverse Proxy the subdomains and domains to s3 bucket static assets
 
-To learn more about Next.js, take a look at the following resources:
+### Local Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Run `npm install` in all the 3 services i.e. `api-server`, `build-server` and `s3-reverse-proxy`
+2. Docker build the `build-server` and push the image to AWS ECR.
+3. Setup the `api-server` by providing all the required config such as TASK ARN and CLUSTER arn.
+4. Run `node index.js` in `api-server` and `s3-reverse-proxy`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+At this point following services would be up and running:
 
-## Deploy on Vercel
+| S.No | Service            | PORT    |
+| ---- | ------------------ | ------- |
+| 1    | `api-server`       | `:9000` |
+| 2    | `socket.io-server` | `:9002` |
+| 3    | `s3-reverse-proxy` | `:8000` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Demo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[Watch The Demo Video](https://imgur.com/I6KgmNR)
+
+### Architecture
+
+![Vercel Clone Architecture](https://i.imgur.com/r7QUXqZ.png)
